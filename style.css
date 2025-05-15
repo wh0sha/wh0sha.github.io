@@ -1,8 +1,28 @@
-body {
-    margin: 0;
-    overflow: hidden;
+body { margin: 0; overflow: hidden; font-family: Arial; }
+#menu {
+    position: absolute;
+    z-index: 100;
+    background: #222;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
-#gameCanvas {
-    display: block;
-    background-color: black;
+.setting { margin: 10px 0; }
+button { padding: 8px 15px; cursor: pointer; }
+
+#infoPanel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 16px;
+    min-width: 250px;
+    z-index: 50;
 }

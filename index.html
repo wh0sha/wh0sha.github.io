@@ -3,11 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOMINA.IO</title>
+    <title>Domina.io</title>
     <link rel = "stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id = "gameCanvas"></canvas>
+    <div id="menu">
+        <h2>Настройки</h2>
+        <div class="setting">
+            <label>Размер карты:</label>
+            <select id="mapSize">
+                <option value="small">Маленькая</option>
+                <option value="medium" selected>Средняя</option>
+                <option value="large">Большая</option>
+            </select>
+        </div>
+        <div class="setting">
+            <label>Цвет:</label>
+            <input id="territoryColor" type="color" value="#4CAF50">
+        </div>
+        <button id="startButton">Играть</button>
+    </div>
+
+    <div id="infoPanel" style="display:none;">
+        <div>Население: <span id="popCount">0</span> / <span id="popCap">0</span></div>
+        <div>Рост: +<span id="growthRateText">0</span>/сек</div>
+        <div>Территория: <span id="territoryPercent">0</span>%</div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
 
     <script src="game.js"></script>
 </body>
