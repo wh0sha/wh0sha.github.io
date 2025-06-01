@@ -1,28 +1,391 @@
-body { margin: 0; overflow: hidden; font-family: Arial; }
-#menu {
-    position: absolute;
-    z-index: 100;
-    background: #222;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 300px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+/* ========== Переменные тем оформления ========== */
+[data-theme="dark"] {
+    --bg-color: #222222;
+    --text-color: #ffffff;
+    --panel-bg: rgba(0, 0, 0, 0.8);
+    --input-bg: #333333;
+    --input-border: #444444;
+    --button-bg: #4CAF50;
+    --button-text: #ffffff;
+    --hint-color: #aaaaaa;
+    --border-player: #00FF00;
+    --border-bot: #888888;
+    --canvas-bg: #333333;
+    --canvas-empty: #000000;
 }
-.setting { margin: 10px 0; }
-button { padding: 8px 15px; cursor: pointer; }
 
-#infoPanel {
+[data-theme="light"] {
+    --bg-color: #f5f5f5;
+    --text-color: #333333;
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --input-bg: #e0e0e0;
+    --input-border: #999999;
+    --button-bg: #2e7d32;
+    --button-text: #ffffff;
+    --hint-color: #666666;
+    --border-player: #00cc00;
+    --border-bot: #666666;
+    --canvas-bg: #cccccc;
+    --canvas-empty: #ffffff;
+}
+
+/* ========== Сброс дефолтных стилей и базовая настройка ========== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========== Основное меню (Flexbox) ========== */
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 15px 20px;
-    border-radius: 12px;
-    font-size: 16px;
-    min-width: 250px;
+    width: 100%;
+    height: 100vh;
+    background: var(--panel-bg);
+    padding: 1rem;
+}
+
+.menu__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    max-width: 360px;
+}
+
+.menu__title {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.menu__setting {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.menu__label {
+    font-size: 1rem;
+}
+
+.menu__input,
+.menu__select {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid var(--input-border);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu__button {
+    font-size: 1rem;
+    padding: 0.625rem 1.125rem;
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.menu__button:hover {
+    opacity: 0.9;
+}
+
+.menu__button--secondary {
+    background-color: #1976d2; /* Синий оттенок для кнопки "Как играть" */
+}
+
+.menu__hint {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--hint-color);
+}
+
+/* ========== Гайд (Flexbox) ========== */
+.guide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: var(--panel-bg);
+    padding: 1rem;
+}
+
+.guide__content {
+    background: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    max-width: 500px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.guide__title {
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.guide__content ul {
+    list-style: disc inside;
+}
+
+.guide__content li {
+    margin-bottom: 0.5rem;
+}
+
+/* ========== Информационная панель ========== */
+.info-panel {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--panel-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    min-width: 200px;
+    max-width: 90%;
     z-index: 50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.info-panel__row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.info-panel__label {
+    font-weight: bold;
+}
+
+.info-panel__value {
+    font-weight: bold;
+}
+
+/* ========== Таблица лидеров ========== */
+.leaderboard {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--panel-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    min-width: 180px;
+    max-width: 90%;
+    z-index: 50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.leaderboard__title {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.leaderboard__list {
+    list-style: none;
+}
+
+.leaderboard__list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.375rem;
+    padding: 0.2rem 0;
+}
+
+.color-dot {
+    display: inline-block;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    margin-right: 0.375rem;
+}
+
+/* ========== Уведомления ========== */
+.notifications {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: var(--panel-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    min-width: 200px;
+    max-width: 90%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.notifications__title {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.notifications__list {
+    list-style: none;
+}
+
+.notifications__list li {
+    margin-bottom: 0.25rem;
+    padding: 0.2rem 0;
+}
+
+/* ========== Canvas для игры ========== */
+.game-canvas {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    background: var(--canvas-bg);
+    cursor: grab;
+    transition: background-color 0.3s ease;
+}
+
+.game-canvas:active {
+    cursor: grabbing;
+}
+
+/* ========== Нижний блок управления ========== */
+.bottom-controls {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--panel-bg);
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bottom-controls__label {
+    white-space: nowrap;
+}
+
+.bottom-controls__slider {
+    width: 150px;
+    cursor: pointer;
+}
+
+.bottom-controls__value {
+    font-weight: bold;
+}
+
+/* ========== Военные действия ========== */
+.war-info {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: var(--panel-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    min-width: 180px;
+    max-width: 90%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 50;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.war-info__title {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.war-info__list {
+    list-style: none;
+}
+
+.war-info__list li {
+    margin-bottom: 0.25rem;
+    padding: 0.2rem 0;
+}
+
+/* ========== Адаптивность ========== */
+@media (max-width: 768px) {
+    .info-panel, .leaderboard {
+        top: 0.5rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+    .notifications, .war-info {
+        bottom: 0.5rem;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+    }
+    .bottom-controls {
+        flex-wrap: wrap;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    .bottom-controls__slider {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu__content {
+        max-width: 95%;
+        padding: 1rem;
+    }
+    .info-panel, .leaderboard {
+        max-width: 45%;
+        font-size: 0.7rem;
+        padding: 0.5rem;
+    }
+    .notifications, .war-info {
+        max-width: 45%;
+        font-size: 0.7rem;
+        padding: 0.5rem;
+    }
+    .bottom-controls {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.5rem;
+    }
+    .bottom-controls__slider {
+        max-width: none;
+    }
+    body.with-controls {
+        padding-bottom: 120px;
+    }
+}
+
+/* Чтобы контент не перекрывался нижним блоком управления */
+body.with-controls {
+    padding-bottom: 60px;
 }
