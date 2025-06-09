@@ -265,10 +265,21 @@ class Game {
             return {x:cx,y:cy};
         };
 
+        const botNames = ['мипошка', 'шуга дедди', 'отчим', 'санечка', 'максимка', 'пес рыжик', 'ганзалис', 'данбас', 'казахстан', 'ветмо', 'лох', 'чмо'];
+        let availableNames = [...botNames]; 
+
         for (let i=0; i<count; i++){
             const id = this.nextBotId++;
             const { x, y } = spawn();
-            const bot = new Bot(id, `Бот ${i+1}`, `#${Math.floor(Math.random()*0xFFFFFF).toString(16).padStart(6,'0')}`,
+            // Выбираем имя: если имена закончились, используем запасное
+            let botName;
+            if (availableNames.length > 0) {
+                const nameIndex = Math.floor(Math.random() * availableNames.length);
+                botName = availableNames.splice(nameIndex, 1)[0];
+            } else {
+                botName = `Бот ${i+1}`; // Запасное имя
+            }
+            const bot = new Bot(id, botName, `#${Math.floor(Math.random()*0xFFFFFF).toString(16).padStart(6,'0')}`,
                 botParams.popStart, botParams.minG, botParams.maxG);
             this.entities[id] = bot;
             const idx = y*this.mapWidth + x;
