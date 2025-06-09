@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Domina.io</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Основное меню -->
     <section id="menu" class="menu">
         <h2 class="menu__title">Настройки</h2>
         <div class="menu__content">
@@ -46,7 +45,6 @@
         </div>
     </section>
 
-    <!-- Страница с гайдом -->
     <section id="guide" class="guide" style="display: none;">
         <h2 class="guide__title">Как играть</h2>
         <div class="guide__content">
@@ -71,73 +69,33 @@
         </div>
     </section>
 
-    <!-- Игровой интерфейс -->
-    <div id="infoPanel" class="info-panel" style="display: none;">
-        <div class="info-panel__row">
-            <span class="info-panel__label">Население (<span id="playerNameDisplay"></span>):</span>
-            <span class="info-panel__value"><span id="popCount">0</span> / <span id="popCap">0</span></span>
-        </div>
-        <div class="info-panel__row">
-            <span class="info-panel__label">Темп роста:</span>
-            <span class="info-panel__value">+<span id="growthRateText">0</span>% / сек</span>
-        </div>
-        <div class="info-panel__row">
-            <span class="info-panel__label">Территория:</span>
-            <span class="info-panel__value"><span id="territoryPercent">0</span>%</span>
-        </div>
-    </div>
-
-    <div id="leaderboard" class="leaderboard" style="display: none;">
-        <h3 class="leaderboard__title">Таблица лидеров</h3>
-        <ul id="leaderList" class="leaderboard__list"></ul>
-    </div>
-
-    <div id="notifications" class="notifications" style="display: none;">
-        <h3 class="notifications__title">Уведомления</h3>
-        <ul id="notifList" class="notifications__list"></ul>
-    </div>
+    <div id="bottomControls" class="bottom-controls">
+    <label for="sendPercent" class="bottom-controls__label">
+        Процент отправки:
+        <span id="sendPercentValue" class="bottom-controls__value">20%</span>
+    </label>
+    <input type="range" id="sendPercent" class="bottom-controls__slider" min="0" max="100" value="20" />
+</div>
 
     <canvas id="gameCanvas" class="game-canvas"></canvas>
 
-    <div id="bottomControls" class="bottom-controls" style="display: none;">
-        <label for="sendPercent" class="bottom-controls__label">
-            Процент отправки:
-            <span id="sendPercentValue" class="bottom-controls__value">20%</span>
-        </label>
-        <input type="range" id="sendPercent" class="bottom-controls__slider" min="1" max="100" value="20" />
-    </div>
-
-    <div id="warInfo" class="war-info" style="display: none;">
-        <h3 class="war-info__title">Военные действия</h3>
-        <ul id="warList" class="war-info__list"></ul>
-    </div>
-
-    <!-- Скрипт управления темой -->
     <script>
-        // Получаем элементы для переключения темы
         const themeSelect = document.getElementById('themeSelect');
 
-        /**
-         * Устанавливает тему (тёмная или светлая) и сохраняет выбор в localStorage
-         * @param {string} theme — 'dark' или 'light'
-         */
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('gameTheme', theme);
         }
 
-        // Обработчик изменения темы в меню
         themeSelect.addEventListener('change', (e) => {
             setTheme(e.target.value);
         });
 
-        // При загрузке страницы устанавливаем сохранённую тему или по умолчанию 'dark'
         const savedTheme = localStorage.getItem('gameTheme') || 'dark';
         setTheme(savedTheme);
         themeSelect.value = savedTheme;
     </script>
 
-    <!-- Подключаем основной игровой скрипт -->
     <script src="game.js"></script>
 </body>
 </html>
