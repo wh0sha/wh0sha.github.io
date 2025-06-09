@@ -673,11 +673,11 @@ _processEntityActions(ent, ts) {
         const botCount = Object.keys(this.entities).length - 1; // Исключаем игрока
         for (let id in this.entities) {
             const ent = this.entities[id];
-            if (ent.area.size/total > 0.5) {
+            if (ent.area.size/total > 0.8) {
                 this.isGameOver = true;
                 alert(+id===this.playerId ?
                     'Поздравляем! Вы захватили более 50% карты и выиграли!' :
-                    `К сожалению, бот "${ent.name}" занял более 50% карты. Вы проиграли.`
+                    `К сожалению, бот "${ent.name}" занял более 80% карты. Вы проиграли.`
                 );
                 this.destroy();
                 return;
