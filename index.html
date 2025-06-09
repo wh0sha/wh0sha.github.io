@@ -12,7 +12,7 @@
         <div class="menu__content">
             <div class="menu__setting">
                 <label for="playerName" class="menu__label">Имя игрока:</label>
-                <input type="text" id="playerName" class="menu__input" placeholder="Введите ваше имя" value="Игрок" />
+                <input type="text" id="playerName" class="menu__input" placeholder="Введите ваше имя" value="Игрок" maxlength="10"/>
             </div>
             <div class="menu__setting">
                 <label for="botDifficulty" class="menu__label">Сложность ботов:</label>
@@ -75,7 +75,7 @@
         <span id="sendPercentValue" class="bottom-controls__value">20%</span>
     </label>
     <input type="range" id="sendPercent" class="bottom-controls__slider" min="0" max="100" value="20" />
-</div>
+    </div>
 
     <canvas id="gameCanvas" class="game-canvas"></canvas>
 
